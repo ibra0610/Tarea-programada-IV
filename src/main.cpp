@@ -3,6 +3,7 @@
 #include "procesadorInstrucciones.h"
 #include "identificadorOperaciones.h"
 #include "operacionHola.h"
+#include "operacionSuma.h" 
 
 #include <iostream>
 #include <string>
@@ -26,20 +27,24 @@ int main() {
         {
             std::cerr << "Error leyendo archivo formato.ini" << std::endl;
             return -1;
-        }
+        } 
 
         ProveedorFormato *proveedorFormato = new ProveedorFormatoDesdeStream(&ifs);
 
         OperacionHola *operacionHola = new OperacionHola(proveedorFormato);
+        OperacionSuma *operacionSuma = new OperacionSuma(); 
+        
         operaciones.insert(std::pair<string, Operacion *>("hola", operacionHola));
+        operaciones.insert(std::pair<string, Operacion *>("suma", operacionSuma)); 
 
         IdentificadorOperacionesBase *identificadorOperaciones = new IdentificadorOperaciones(operaciones);
 
         
         ProcesadorInstrucciones *procesador = new ProcesadorInstrucciones(identificadorOperaciones);
         string resultado = procesador->Procese("hola", "todos");
-
-        cout << "Resultado: " << resultado << endl;
+        string salida = procesador->Procese("suma","2 + 3"); 
+        cout << "Resultado: " << salida << endl; 
+        cout << "Resultado: " << resultado << endl; 
 
         // Cerrar archivo de entrada
         ifs.close();
